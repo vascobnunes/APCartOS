@@ -1,0 +1,19 @@
+<RCC>
+   <qresource prefix="/" >
+      <file>icons/zoom-in.png</file>
+	  <file>icons/zoom-out.png</file>
+	  <file>icons/grass_add_map.png</file>
+	  <file>icons/pan.png</file>
+	  <file>icons/collapse.png</file>
+	  <file>icons/expand.png</file>
+	  <file>icons/mActionFileOpen.png</file>
+	  <file>icons/mActionFileSave.png</file>
+	  <file>icons/mActionZoomToLayer.png</file>
+	  <file>icons/mIconLineLayer.png</file>
+	  <file>icons/mIconPointLayer.png</file>
+	  <file>icons/mIconPolygonLayer.png</file>
+	  <file>icons/mIconProperties.png</file>
+	  <file>icons/removeLayer.png</file>
+	  <file>icons/symbology.png</file>
+   </qresource>
+</RCC>
