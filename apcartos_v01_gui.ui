@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>612</width>
+    <width>544</width>
     <height>705</height>
    </rect>
   </property>
@@ -16,14 +16,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <widget class="QMdiArea" name="mapArea">
-      <property name="frameShape">
-       <enum>QFrame::Box</enum>
-      </property>
-      <property name="viewMode">
-       <enum>QMdiArea::SubWindowView</enum>
-      </property>
-     </widget>
+     <widget class="QMdiArea" name="mapArea"/>
     </item>
    </layout>
   </widget>
@@ -32,8 +25,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>612</width>
-     <height>21</height>
+     <width>544</width>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -41,9 +34,16 @@
      <string>File</string>
     </property>
     <addaction name="actionOpen"/>
-    <addaction name="actionNew_Window"/>
+   </widget>
+   <widget class="QMenu" name="menuWindows">
+    <property name="title">
+     <string>Windows</string>
+    </property>
+    <addaction name="actionTile"/>
+    <addaction name="actionLink"/>
    </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuWindows"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
@@ -59,12 +59,17 @@
   </widget>
   <action name="actionOpen">
    <property name="text">
-    <string>Open</string>
+    <string>Add new window</string>
    </property>
   </action>
-  <action name="actionNew_Window">
+  <action name="actionTile">
    <property name="text">
-    <string>New Window</string>
+    <string>Tile</string>
+   </property>
+  </action>
+  <action name="actionLink">
+   <property name="text">
+    <string>Link</string>
    </property>
   </action>
  </widget>

@@ -34,8 +34,9 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     ## Create the legend widget
     self.createLegendWidget()
 
-    self.actionNew_Window.triggered.connect(self.newWindow)
+    self.actionOpen.triggered.connect(self.newWindow)
     self.mapArea.subWindowActivated.connect(self.subActive)
+    self.actionTile.triggered.connect(self.tileWindows)
     
     #create the actions
     self.actionAddLayer = QAction(QIcon(":/icons/grass_add_map.png"), QString("Add Layer"), self)
@@ -58,10 +59,13 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     self.toolBar.addAction(self.actionZoomIn)
     self.toolBar.addAction(self.actionZoomOut)
     self.toolBar.addAction(self.actionPan)
+
+  def tileWindows(self):
+    self.mapArea.tileSubWindows()
     
   def createLegendWidget( self ):
   #Create the map legend widget and associate to the canvas """
-    self.legend = QgsLegend ( self )
+    self.legend = Legend ( self )
     #self.legend.setCanvas( self.canvas )
     self.legend.setObjectName( "theMapLegend" )
 
