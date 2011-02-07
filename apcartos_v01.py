@@ -37,6 +37,7 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     self.actionOpen.triggered.connect(self.newWindow)
     self.mapArea.subWindowActivated.connect(self.subActive)
     self.actionTile.triggered.connect(self.tileWindows)
+    self.actionLink.triggered.connect(self.link)
     
     #create the actions
     self.actionAddLayer = QAction(QIcon(":/icons/grass_add_map.png"), QString("Add Layer"), self)
@@ -94,7 +95,8 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
 	self.span()
     else:
 	return
-    
+
+  
   def newWindow(self): 
     canvas = MyCanvas()
     canvas.useImageToRender(False)
@@ -114,6 +116,16 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
 
     canvas.show()    
 
+  def link(self):
+    # self.mapArea.subWindowList().setMapCanvas( self.activeCanvas )  
+    for windw in self.mapArea.subWindowList():
+        # self.activeCanvas.setExtent(canvas.extent())
+		# # self.activeCanvas.setExtent(layer.extent())
+		# # windwactiva = self.mapArea.activeSubWindow(canvas)
+        # # extnt = windwactiva.getExtent()
+        windw.setMapCanvas( self.activeCanvas )
+        # activeCanvas.refresh()	
+	
   def zoomIn(self): 
     self.activeCanvas.setMapTool(self.activeCanvas.getZoomInTool())
     self.activeTool = "ZoomIn"
