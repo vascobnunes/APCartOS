@@ -22,7 +22,7 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
 	
   def __init__(self):
     QMainWindow.__init__(self)
-    
+    self.activeCanvas = None
     self.activeTool = None
     # Required by Qt4 to initialize the UI
     self.setupUi(self)
@@ -83,9 +83,12 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     if window is None:
 	return
     
+    #Disconnect the last
+    if not self.activeCanvas is None:
+	self.activeCanvas.extentsChanged.disconnect(self.extentsChanged)
+    
     self.activeCanvas = window.widget()
-    self.legend.setMapCanvas( self.activeCanvas )
-    #self.legend.updateLayerSet()
+    self.activeCanvas.extentsChanged.connect(self.extentsChanged)
     
     if self.activeTool == "ZoomIn":
 	self.zoomIn()
@@ -96,6 +99,17 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     else:
 	return
   
+  def extentsChanged(self):
+    print "Extents chagned"
+    for window in self.mapArea.subWindowList():
+      if not self.mapArea.activeSubWindow() == window:
+	print window.widget()
+	extent = self.activeCanvas.extent()
+	can = window.widget()
+	can.setExtent(extent)
+      
+      
+      
   def newWindow(self): 
     canvas = MyCanvas()
     canvas.useImageToRender(False)
