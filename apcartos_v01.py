@@ -95,7 +95,6 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
 	self.span()
     else:
 	return
-
   
   def newWindow(self): 
     canvas = MyCanvas()
@@ -113,18 +112,20 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     panTool = QgsMapToolPan(canvas)
     panTool.setAction(self.actionPan)
     canvas.setPanTool(panTool)
-
     canvas.show()    
 
   def link(self):
     # self.mapArea.subWindowList().setMapCanvas( self.activeCanvas )  
     for windw in self.mapArea.subWindowList():
-        # self.activeCanvas.setExtent(canvas.extent())
-		# # self.activeCanvas.setExtent(layer.extent())
+        newCanvas=QgsMapCanvas(windw)
+        #selectCanvas = QgsMapCanvas(self.mapArea.activeSubWindow()).extent()
+        newCanvas.setExtent(self.activeCanvas.extent())
+        newCanvas.refresh()
+        # # self.activeCanvas.setExtent(layer.extent())
 		# # windwactiva = self.mapArea.activeSubWindow(canvas)
-        # # extnt = windwactiva.getExtent()
-        windw.setMapCanvas( self.activeCanvas )
-        # activeCanvas.refresh()	
+		# # extnt = windwactiva.getExtent()
+		# QgsMapCanvas.extentsChanged()
+		# activeCanvas.refresh()	
 	
   def zoomIn(self): 
     self.activeCanvas.setMapTool(self.activeCanvas.getZoomInTool())
@@ -155,7 +156,7 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     if not layer.isValid():
       return
 
-    
+
     # Add layer to the registry
     QgsMapLayerRegistry.instance().addMapLayer(layer);
     
@@ -193,6 +194,7 @@ class MyCanvas(QgsMapCanvas):
 	
     def getPanTool(self):
 	return self.panTool
+
 
 
 def main(argv):
