@@ -37,7 +37,7 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     self.actionOpen.triggered.connect(self.newWindow)
     self.mapArea.subWindowActivated.connect(self.subActive)
     self.actionTile.triggered.connect(self.tileWindows)
-    self.actionLink.triggered.connect(self.link)
+    #self.actionLink.triggered.connect(self.link)
     
     #create the actions
     self.actionAddLayer = QAction(QIcon(":/icons/grass_add_map.png"), QString("Add Layer"), self)
@@ -100,16 +100,16 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
 	return
   
   def extentsChanged(self):
-    print "Extents chagned"
+    # print "Extents chagned"
     for window in self.mapArea.subWindowList():
       if not self.mapArea.activeSubWindow() == window:
-	print window.widget()
+	# print window.widget()
 	extent = self.activeCanvas.extent()
 	can = window.widget()
 	can.setExtent(extent)
-      
-      
-      
+	can.refresh()	
+        
+     
   def newWindow(self): 
     canvas = MyCanvas()
     canvas.useImageToRender(False)
@@ -128,19 +128,6 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     canvas.setPanTool(panTool)
     canvas.show()    
 
-  def link(self):
-    # self.mapArea.subWindowList().setMapCanvas( self.activeCanvas )  
-    for windw in self.mapArea.subWindowList():
-        newCanvas=QgsMapCanvas(windw)
-        #selectCanvas = QgsMapCanvas(self.mapArea.activeSubWindow()).extent()
-        newCanvas.setExtent(self.activeCanvas.extent())
-        newCanvas.refresh()
-        # # self.activeCanvas.setExtent(layer.extent())
-		# # windwactiva = self.mapArea.activeSubWindow(canvas)
-		# # extnt = windwactiva.getExtent()
-		# QgsMapCanvas.extentsChanged()
-		# activeCanvas.refresh()	
-	
   def zoomIn(self): 
     self.activeCanvas.setMapTool(self.activeCanvas.getZoomInTool())
     self.activeTool = "ZoomIn"
