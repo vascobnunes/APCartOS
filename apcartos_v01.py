@@ -173,7 +173,7 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     
 class MyCanvas(QgsMapCanvas):
     def __init__(self,parent=None):
-        QgsMapCanvas.__init__(self,parent)
+	QgsMapCanvas.__init__(self,parent)
 
     def setZoomInTool(self, tool):
 	self.zoomInTool = tool
