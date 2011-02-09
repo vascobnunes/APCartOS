@@ -91,20 +91,21 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     self.activeCanvas.extentsChanged.connect(self.extentsChanged)
     print self.activeCanvas.layerCount ()
     
+    for layer in self.activeCanvas.layers():
+      print layer.name()
+    
     if self.activeTool == "ZoomIn":
 	self.zoomIn()
     elif self.activeTool == "ZoomOut":
 	self.zoomOut()
     elif self.activeTool == "Pan":
-	self.panTool()
+	self.pan()
     else:
 	return
   
   def extentsChanged(self):
-    # print "Extents chagned"
     for window in self.mapArea.subWindowList():
-      if not self.mapArea.activeSubWindow() == window:
-	# print window.widget()
+      if not window.widget() == self.activeCanvas:
         extent = self.activeCanvas.extent()
         can = window.widget()
         can.setExtent(extent)
