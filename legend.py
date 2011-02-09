@@ -201,8 +201,8 @@ class Legend( QTreeWidget ):
 
         self.connect( self, SIGNAL( "customContextMenuRequested(QPoint)" ),
             self.showMenu )
-        #self.connect( QgsMapLayerRegistry.instance(), SIGNAL("layerWasAdded(QgsMapLayer *)"),
-        #    self.addLayerToLegend)
+        self.connect( QgsMapLayerRegistry.instance(), SIGNAL("layerWasAdded(QgsMapLayer *)"),
+            self.addLayerToLegend)
         self.connect( QgsMapLayerRegistry.instance(), SIGNAL( "removedAll()" ),
             self.removeAll )
         self.connect( self, SIGNAL("itemChanged(QTreeWidgetItem *,int)"),

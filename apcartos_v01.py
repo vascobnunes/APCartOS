@@ -12,14 +12,13 @@ from legend import Legend
 # Import our GUI
 from apcartos_v01_gui import Ui_MainWindow
 
-
-
 # Environment variable QGISHOME must be set to the install directory
 # before running the application
 qgis_prefix = os.getenv("QGISHOME")
 
 class ShapeViewer(QMainWindow, Ui_MainWindow):
-	
+
+  
   def __init__(self):
     QMainWindow.__init__(self)
     self.activeCanvas = None
@@ -28,10 +27,9 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     self.setupUi(self)
 
     # Set the title for the app
-    self.setWindowTitle("APCartOS v0.1")
+    self.setWindowTitle("APCartOS v0.2")
     
-    #self.mapArea.setViewMode(QMdiArea.TabbedView)
-    ## Create the legend widget
+    # Create the legend widget
     self.createLegendWidget()
 
     self.actionOpen.triggered.connect(self.newWindow)
@@ -42,7 +40,7 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     #create the actions
     self.actionAddLayer = QAction(QIcon(":/icons/grass_add_map.png"), QString("Add Layer"), self)
     self.actionZoomIn = QAction(QIcon(":/icons/zoom-in.png"), QString("Zoom in"), self)
-    self.actionZoomOut = QAction(QIcon(":/icons/zoom-out.png"), "Zoom out", self)
+    self.actionZoomOut = QAction(QIcon(":/icons/zoom-out.png"), QString("Zoom out"), self)
     self.actionPan = QAction(QIcon(":/icons/pan.png"), QString("Pan"), self)
 
     self.actionAddLayer.setCheckable(True)
@@ -61,41 +59,44 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     self.toolBar.addAction(self.actionZoomOut)
     self.toolBar.addAction(self.actionPan)
 
-  def tileWindows(self):
-    self.mapArea.tileSubWindows()
-    
   def createLegendWidget( self ):
   #Create the map legend widget and associate to the canvas """
-    self.legend = Legend ( self )
-    #self.legend.setCanvas( self.canvas )
-    self.legend.setObjectName( "theMapLegend" )
+      self.legend = Legend( self )
+      # self.legend.setCanvas( self.canvas )
+      self.legend.setObjectName( "theMapLegend" )
 
-    self.LegendDock = QDockWidget( "Layers", self )
-    self.LegendDock.setObjectName( "legend" )
-    self.LegendDock.setAllowedAreas( Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea )
-    self.LegendDock.setWidget( self.legend )
-    self.LegendDock.setContentsMargins ( 9, 9, 9, 9 )
-    self.addDockWidget( Qt.LeftDockWidgetArea, self.LegendDock )
-    
+      self.LegendDock = QDockWidget( "Layers", self )
+      self.LegendDock.setObjectName( "legend" )
+      self.LegendDock.setAllowedAreas( Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea )
+      self.LegendDock.setWidget( self.legend )
+      self.LegendDock.setContentsMargins ( 9, 9, 9, 9 )
+      self.addDockWidget( Qt.LeftDockWidgetArea, self.LegendDock )
+
+
+  
+  def tileWindows(self):
+    self.mapArea.tileSubWindows()  
+   
     
   def subActive(self, window):
     
     if window is None:
 	return
-    
+
     #Disconnect the last
     if not self.activeCanvas is None:
 	self.activeCanvas.extentsChanged.disconnect(self.extentsChanged)
     
     self.activeCanvas = window.widget()
     self.activeCanvas.extentsChanged.connect(self.extentsChanged)
+    print self.activeCanvas.layerCount ()
     
     if self.activeTool == "ZoomIn":
 	self.zoomIn()
     elif self.activeTool == "ZoomOut":
 	self.zoomOut()
     elif self.activeTool == "Pan":
-	self.span()
+	self.panTool()
     else:
 	return
   
@@ -157,14 +158,10 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     if not layer.isValid():
       return
 
-
     # Add layer to the registry
     QgsMapLayerRegistry.instance().addMapLayer(layer);
+    #QgsMapLayerRegistry.instance().layerWasAdded.connect(self.addLayerToLegend)
     
-    # self.layermap=QgsMapLayerRegistry.instance().mapLayers()
-    # for (name,layer) in self.layermap.iteritems():
-        # QMessageBox.information(self.frame,"debug",str(name))
-
     # Set extent to the extent of our layer
     self.activeCanvas.setExtent(layer.extent())
 
@@ -172,12 +169,12 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     cl = QgsMapCanvasLayer(layer)
     layers = [cl]
     self.activeCanvas.setLayerSet(layers)
-    print l
+    # print layers
     
 class MyCanvas(QgsMapCanvas):
     def __init__(self,parent=None):
-	QgsMapCanvas.__init__(self,parent)
-	
+        QgsMapCanvas.__init__(self,parent)
+
     def setZoomInTool(self, tool):
 	self.zoomInTool = tool
     
