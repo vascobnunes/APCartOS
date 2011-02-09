@@ -62,7 +62,6 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
   def createLegendWidget( self ):
   #Create the map legend widget and associate to the canvas """
       self.legend = Legend( self )
-      # self.legend.setCanvas( self.canvas )
       self.legend.setObjectName( "theMapLegend" )
 
       self.LegendDock = QDockWidget( "Layers", self )
@@ -77,7 +76,6 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
   def tileWindows(self):
     self.mapArea.tileSubWindows()  
    
-    
   def subActive(self, window):
     
     if window is None:
@@ -88,11 +86,12 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
 	self.activeCanvas.extentsChanged.disconnect(self.extentsChanged)
     
     self.activeCanvas = window.widget()
+    self.legend.setCanvas(self.activeCanvas)
     self.activeCanvas.extentsChanged.connect(self.extentsChanged)
-    print self.activeCanvas.layerCount ()
     
+    self.legend.clear()
     for layer in self.activeCanvas.layers():
-      print layer.name()
+      self.legend.addLayerToLegend(layer)
     
     if self.activeTool == "ZoomIn":
 	self.zoomIn()
@@ -168,12 +167,13 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
 
     # Set up the map canvas layer set
     cl = QgsMapCanvasLayer(layer)
-    layers = [cl]
-    self.activeCanvas.setLayerSet(layers)
+    self.activeCanvas.innerlayers.append(cl)
+    self.activeCanvas.setLayerSet(self.activeCanvas.innerlayers)
     # print layers
     
 class MyCanvas(QgsMapCanvas):
     def __init__(self,parent=None):
+	self.innerlayers = []
 	QgsMapCanvas.__init__(self,parent)
 
     def setZoomInTool(self, tool):

@@ -211,7 +211,6 @@ class Legend( QTreeWidget ):
             self.currentItemChanged )
 
     def setCanvas( self, canvas ):
-        print "Setting Canvas"
         """ Set the base canvas """
         self.canvas = canvas
         self.connect( self.canvas, SIGNAL("addedLayer()"),
@@ -324,7 +323,6 @@ class Legend( QTreeWidget ):
         self.itemBeingMoved = None
 
     def addLayerToLegend( self, canvasLayer ):
-        print "Adding layer"
         """ Slot. Create and add a legend item based on a layer """
         legendLayer = LegendItem( self, QgsMapCanvasLayer( canvasLayer ) )
         self.addLayer( legendLayer )
