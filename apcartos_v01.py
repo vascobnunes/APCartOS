@@ -105,10 +105,10 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     for window in self.mapArea.subWindowList():
       if not self.mapArea.activeSubWindow() == window:
 	# print window.widget()
-	extent = self.activeCanvas.extent()
-	can = window.widget()
-	can.setExtent(extent)
-	can.refresh()	
+        extent = self.activeCanvas.extent()
+        can = window.widget()
+        can.setExtent(extent)
+        can.refresh()	
         
      
   def newWindow(self): 
