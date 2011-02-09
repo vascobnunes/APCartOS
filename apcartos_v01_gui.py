@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'apcartos_v01_gui.ui'
 #
-# Created: Thu Feb 03 14:54:04 2011
+# Created: Wed Feb 09 17:29:53 2011
 #      by: PyQt4 UI code generator 4.5.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -28,6 +28,10 @@ class Ui_MainWindow(object):
         self.menuFile.setObjectName("menuFile")
         self.menuWindows = QtGui.QMenu(self.menubar)
         self.menuWindows.setObjectName("menuWindows")
+        self.menuHelp = QtGui.QMenu(self.menubar)
+        self.menuHelp.setObjectName("menuHelp")
+        self.menuEdit = QtGui.QMenu(self.menubar)
+        self.menuEdit.setObjectName("menuEdit")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -41,11 +45,17 @@ class Ui_MainWindow(object):
         self.actionTile.setObjectName("actionTile")
         self.actionLink = QtGui.QAction(MainWindow)
         self.actionLink.setObjectName("actionLink")
-        self.menuFile.addAction(self.actionOpen)
+        self.actionStart_editing = QtGui.QAction(MainWindow)
+        self.actionStart_editing.setObjectName("actionStart_editing")
+        self.actionAdd_new_window = QtGui.QAction(MainWindow)
+        self.actionAdd_new_window.setObjectName("actionAdd_new_window")
+        self.menuWindows.addAction(self.actionAdd_new_window)
         self.menuWindows.addAction(self.actionTile)
-        self.menuWindows.addAction(self.actionLink)
+        self.menuEdit.addAction(self.actionStart_editing)
         self.menubar.addAction(self.menuFile.menuAction())
+        self.menubar.addAction(self.menuEdit.menuAction())
         self.menubar.addAction(self.menuWindows.menuAction())
+        self.menubar.addAction(self.menuHelp.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -54,8 +64,13 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "MainWindow", None, QtGui.QApplication.UnicodeUTF8))
         self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
         self.menuWindows.setTitle(QtGui.QApplication.translate("MainWindow", "Windows", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuHelp.setTitle(QtGui.QApplication.translate("MainWindow", "Help", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuEdit.setTitle(QtGui.QApplication.translate("MainWindow", "Edit", None, QtGui.QApplication.UnicodeUTF8))
         self.toolBar.setWindowTitle(QtGui.QApplication.translate("MainWindow", "toolBar", None, QtGui.QApplication.UnicodeUTF8))
         self.actionOpen.setText(QtGui.QApplication.translate("MainWindow", "Add new window", None, QtGui.QApplication.UnicodeUTF8))
         self.actionTile.setText(QtGui.QApplication.translate("MainWindow", "Tile", None, QtGui.QApplication.UnicodeUTF8))
         self.actionLink.setText(QtGui.QApplication.translate("MainWindow", "Link", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionStart_editing.setText(QtGui.QApplication.translate("MainWindow", "Start editing", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionAdd_new_window.setText(QtGui.QApplication.translate("MainWindow", "Add new window", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionAdd_new_window.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+W", None, QtGui.QApplication.UnicodeUTF8))
 

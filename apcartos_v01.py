@@ -32,10 +32,11 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     # Create the legend widget
     self.createLegendWidget()
 
-    self.actionOpen.triggered.connect(self.newWindow)
+    self.actionAdd_new_window.triggered.connect(self.newWindow)
     self.mapArea.subWindowActivated.connect(self.subActive)
     self.actionTile.triggered.connect(self.tileWindows)
-    #self.actionLink.triggered.connect(self.link)
+    #self.actionStart_editing.triggered.connect(self.startEditing)
+    #self.actionAddWms.triggered.connect(self.addWms)
     
     #create the actions
     self.actionAddLayer = QAction(QIcon(":/icons/grass_add_map.png"), QString("Add Layer"), self)
@@ -92,7 +93,7 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     self.legend.clear()
     for layer in self.activeCanvas.layers():
       self.legend.addLayerToLegend(layer)
-    
+       	
     if self.activeTool == "ZoomIn":
 	self.zoomIn()
     elif self.activeTool == "ZoomOut":
@@ -169,8 +170,34 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     cl = QgsMapCanvasLayer(layer)
     self.activeCanvas.innerlayers.append(cl)
     self.activeCanvas.setLayerSet(self.activeCanvas.innerlayers)
+
     # print layers
+	
+  def addWms (self):
+    #Testing on how to add WMS layer
+    url = 'http://beta.sedac.ciesin.columbia.edu/mapserver/wms/hfoot'
+    wmslayers = [ 'hfoot' ]
+    #styles = [ 'pseudo' ]
+    #format = 'image/jpeg'
+    #crs = 'EPSG:4326'
+    rlayer = QgsRasterLayer(0, url, 'some layer name', 'wms', wmslayers) #, styles, format, crs)
+    if not rlayer.isValid():
+      print "Layer failed to load!"  
+	  
+    # Add layer to the registry
+    QgsMapLayerRegistry.instance().addMapLayer(rlayer);
+    #QgsMapLayerRegistry.instance().layerWasAdded.connect(self.addLayerToLegend)
     
+    # Set extent to the extent of our layer
+    self.activeCanvas.setExtent(rlayer.extent())
+
+    # Set up the map canvas layer set
+    cl = QgsMapCanvasLayer(rlayer)
+    self.activeCanvas.innerlayers.append(cl)
+    self.activeCanvas.setLayerSet(self.activeCanvas.innerlayers)
+
+      
+	  
 class MyCanvas(QgsMapCanvas):
     def __init__(self,parent=None):
 	self.innerlayers = []
