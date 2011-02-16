@@ -81,13 +81,13 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     
     if window is None:
 	return
+    
+    if window.widget() == self.activeCanvas:  
+        return
 
     #Disconnect the last
     if not self.activeCanvas is None:
 	self.activeCanvas.extentsChanged.disconnect(self.extentsChanged)
-    
-    if window.widget() == self.activeCanvas:  
-        return
 	
     self.activeCanvas = window.widget()
     self.legend.setCanvas(self.activeCanvas)
