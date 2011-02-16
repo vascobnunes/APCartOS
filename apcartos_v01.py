@@ -86,12 +86,15 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     if not self.activeCanvas is None:
 	self.activeCanvas.extentsChanged.disconnect(self.extentsChanged)
     
+    if window.widget() == self.activeCanvas:  
+        return
+	
     self.activeCanvas = window.widget()
     self.legend.setCanvas(self.activeCanvas)
     self.activeCanvas.extentsChanged.connect(self.extentsChanged)
     
     self.legend.clear()
-    for layer in self.activeCanvas.layers():
+    for layer in reversed(self.activeCanvas.layers()):
       self.legend.addLayerToLegend(layer)
        	
     if self.activeTool == "ZoomIn":
@@ -128,7 +131,8 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     panTool = QgsMapToolPan(canvas)
     panTool.setAction(self.actionPan)
     canvas.setPanTool(panTool)
-    canvas.show()    
+    canvas.show()
+    self.tileWindows()    
 
   def zoomIn(self): 
     self.activeCanvas.setMapTool(self.activeCanvas.getZoomInTool())
