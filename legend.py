@@ -213,9 +213,6 @@ class Legend( QTreeWidget ):
     def setCanvas( self, canvas ):
         """ Set the base canvas """
         self.canvas = canvas
-        self.connect( self.canvas, SIGNAL("addedLayer()"),
-            self.addLayerToLegend)
-        #self.canvas.addedLayer.connect(self.addLayerToLegend)
 
     def showMenu( self, pos ):
         """ Show a context menu for the active layer in the legend """
@@ -332,7 +329,7 @@ class Legend( QTreeWidget ):
         self.insertTopLevelItem ( 0, legendLayer )
         self.expandItem( legendLayer )
         self.setCurrentItem( legendLayer )
-        self.updateLayerSet()
+        #self.updateLayerSet()
 
     def updateLayerStatus( self, item ):
         """ Update the layer status """
