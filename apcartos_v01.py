@@ -202,9 +202,13 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
 
   def toogleEditing(self):
     layer = self.legend.activeLayer().layer()
-    if not layer.isEditable():	
+    if not layer.isEditable()==True:	
       layer.startEditing()
-      self.extentsChanged()
+      self.activeCanvas.refresh()
+      self.actionStart_editing.setText("Stop editing") 
+    else:
+      layer.commitChanges()
+      self.actionStart_editing.setText("Start editing")
 
 	
 	  
