@@ -35,7 +35,7 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     self.actionAdd_new_window.triggered.connect(self.newWindow)
     self.mapArea.subWindowActivated.connect(self.subActive)
     self.actionTile.triggered.connect(self.tileWindows)
-    #self.actionStart_editing.triggered.connect(self.startEditing)
+    self.actionStart_editing.triggered.connect(self.toogleEditing)
     #self.actionAddWms.triggered.connect(self.addWms)
     
     #create the actions
@@ -200,7 +200,13 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     self.activeCanvas.innerlayers.append(cl)
     self.activeCanvas.setLayerSet(self.activeCanvas.innerlayers)
 
-      
+  def toogleEditing(self):
+    layer = self.legend.activeLayer().layer()
+    if not layer.isEditable():	
+      layer.startEditing()
+      self.extentsChanged()
+
+	
 	  
 class MyCanvas(QgsMapCanvas):
     def __init__(self,parent=None):
