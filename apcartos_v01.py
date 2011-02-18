@@ -202,12 +202,19 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
 
   def toogleEditing(self):
     layer = self.legend.activeLayer().layer()
-    if not layer.isEditable()==True:	
+    if not layer.isEditable():	
       layer.startEditing()
       self.activeCanvas.refresh()
       self.actionStart_editing.setText("Stop editing") 
     else:
-      layer.commitChanges()
+      if not layer.isModified():
+        layer.commitChanges()
+      else:
+        reply = QMessageBox.question(self, "APCartOS","Save changes?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            layer.commitChanges()
+        else:
+            layer.rollBack()      
       self.actionStart_editing.setText("Start editing")
 
 	
@@ -234,8 +241,6 @@ class MyCanvas(QgsMapCanvas):
 	
     def getPanTool(self):
 	return self.panTool
-
-
 
 def main(argv):
   # create Qt application
