@@ -36,6 +36,7 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     self.mapArea.subWindowActivated.connect(self.subActive)
     self.actionTile.triggered.connect(self.tileWindows)
     self.actionStart_editing.triggered.connect(self.toogleEditing)
+    self.actionStart_editing.setEnabled(False)	
     #self.actionAddWms.triggered.connect(self.addWms)
     
     #create the actions
@@ -54,11 +55,13 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     self.actionZoomIn.triggered.connect(self.zoomIn)
     self.actionZoomOut.triggered.connect(self.zoomOut)
     self.actionPan.triggered.connect(self.pan)
+    #self.legend.currentItemChanged(self.enableEditingButton)
 
     self.toolBar.addAction(self.actionAddLayer)
     self.toolBar.addAction(self.actionZoomIn)
     self.toolBar.addAction(self.actionZoomOut)
     self.toolBar.addAction(self.actionPan)
+    self.newWindow()
 
   def createLegendWidget( self ):
   #Create the map legend widget and associate to the canvas """
@@ -161,7 +164,11 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
         layer = QgsRasterLayer(file, fileInfo.fileName())
 
     if not layer.isValid():
-      return
+      tryagain = QMessageBox.question(self, "APCartOS","Layer failed to load! Try again?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No) 
+      if tryagain == QMessageBox.Yes:
+        self.addLayer()
+      else:		
+        return
 
     # Add layer to the registry
     QgsMapLayerRegistry.instance().addMapLayer(layer);
@@ -174,31 +181,17 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     cl = QgsMapCanvasLayer(layer)
     self.activeCanvas.innerlayers.append(cl)
     self.activeCanvas.setLayerSet(self.activeCanvas.innerlayers)
+    self.enableEditingButton()
 
     # print layers
 	
-  def addWms (self):
-    #Testing on how to add WMS layer
-    url = 'http://beta.sedac.ciesin.columbia.edu/mapserver/wms/hfoot'
-    wmslayers = [ 'hfoot' ]
-    #styles = [ 'pseudo' ]
-    #format = 'image/jpeg'
-    #crs = 'EPSG:4326'
-    rlayer = QgsRasterLayer(0, url, 'some layer name', 'wms', wmslayers) #, styles, format, crs)
-    if not rlayer.isValid():
-      print "Layer failed to load!"  
+  def enableEditingButton(self):
+    layer = self.legend.activeLayer().layer()
+    if not layer.isEditable():
+      self.actionStart_editing.setEnabled(1)
+    elif layer.isEditable():
+      self.actionStart_editing.setEnabled(0)
 	  
-    # Add layer to the registry
-    QgsMapLayerRegistry.instance().addMapLayer(rlayer);
-    #QgsMapLayerRegistry.instance().layerWasAdded.connect(self.addLayerToLegend)
-    
-    # Set extent to the extent of our layer
-    self.activeCanvas.setExtent(rlayer.extent())
-
-    # Set up the map canvas layer set
-    cl = QgsMapCanvasLayer(rlayer)
-    self.activeCanvas.innerlayers.append(cl)
-    self.activeCanvas.setLayerSet(self.activeCanvas.innerlayers)
 
   def toogleEditing(self):
     layer = self.legend.activeLayer().layer()
