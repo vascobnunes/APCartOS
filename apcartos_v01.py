@@ -55,7 +55,7 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     self.actionZoomIn.triggered.connect(self.zoomIn)
     self.actionZoomOut.triggered.connect(self.zoomOut)
     self.actionPan.triggered.connect(self.pan)
-    #self.legend.currentItemChanged(self.enableEditingButton)
+    QObject.connect(self.legend, SIGNAL('activeLayerChanged'),self.enableEditingButton)
 
     self.toolBar.addAction(self.actionAddLayer)
     self.toolBar.addAction(self.actionZoomIn)
@@ -181,15 +181,14 @@ class ShapeViewer(QMainWindow, Ui_MainWindow):
     cl = QgsMapCanvasLayer(layer)
     self.activeCanvas.innerlayers.append(cl)
     self.activeCanvas.setLayerSet(self.activeCanvas.innerlayers)
-    self.enableEditingButton()
 
     # print layers
 	
   def enableEditingButton(self):
     layer = self.legend.activeLayer().layer()
-    if not layer.isEditable():
+    if type(layer).__name__ == "QgsVectorLayer":
       self.actionStart_editing.setEnabled(1)
-    elif layer.isEditable():
+    else:
       self.actionStart_editing.setEnabled(0)
 	  
 
